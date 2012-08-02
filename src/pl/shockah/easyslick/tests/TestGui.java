@@ -51,7 +51,7 @@ public class TestGui {
 			}
 		}
 		public void onRender(GraphicsHelper gh) {
-			if (img == null) img = EHandler.newImage("pngFile.png");
+			if (img == null) img = EHandler.newImage("pl/shockah/easyslick/tests/pngFile.png");
 			gh.g().drawImage(img,pos.x,pos.y);
 		}
 	}

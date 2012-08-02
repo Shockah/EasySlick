@@ -24,9 +24,9 @@ public class TestAudio {
 		
 		static {
 			try {
-				midi = new MIDI(TestAudio.class.getClassLoader().getResource("midiFile.mid"));
-				sample = new Sample(TestAudio.class.getClassLoader().getResource("wavFile.wav"));
-				stream = new Stream(TestAudio.class.getClassLoader().getResource("aiffFile.aiff"));
+				midi = new MIDI(TestAudio.class.getResource("midiFile.mid"));
+				sample = new Sample(TestAudio.class.getResource("wavFile.wav"));
+				stream = new Stream(TestAudio.class.getResource("aiffFile.aiff"));
 				audio = midi;
 			} catch (Exception e) {App.getApp().handle(e);}
 		}

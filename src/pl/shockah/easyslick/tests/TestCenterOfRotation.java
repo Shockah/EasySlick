@@ -22,7 +22,7 @@ public class TestCenterOfRotation {
 		}
 		
 		protected void onCreate() {
-			img = EHandler.newImage("pngFile2.png");
+			img = EHandler.newImage("pl/shockah/easyslick/tests/pngFile2.png");
 			img.center();
 		}
 		
