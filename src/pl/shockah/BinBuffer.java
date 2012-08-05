@@ -13,6 +13,10 @@ public class BinBuffer {
 	public BinBuffer(int startBytes) {
 		buffer = new byte[startBytes];
 	}
+	public BinBuffer(ByteBuffer bb) {
+		setByteBuffer(bb);
+		setPos(bytes);
+	}
 	
 	protected void increaseBufferSize() {
 		buffer = Arrays.copyOf(buffer,buffer.length*2);
@@ -112,5 +116,10 @@ public class BinBuffer {
 	
 	public ByteBuffer getByteBuffer() {
 		return ByteBuffer.wrap(buffer,getPos(),getSize());
+	}
+	public BinBuffer setByteBuffer(ByteBuffer bb) {
+		buffer = bb.array();
+		bytes = bb.limit();
+		return this;
 	}
 }
