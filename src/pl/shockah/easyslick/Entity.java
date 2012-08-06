@@ -36,11 +36,6 @@ public abstract class Entity extends Render {
 	}
 	public static ArrayList<Entity> getEntities() {return new ArrayList<Entity>(entities);}
 	
-	@SuppressWarnings("unchecked") public static <T extends Entity> ArrayList<T> getEntities(Class<? extends T> entityClass) {
-		ArrayList<T> list = new ArrayList<T>();
-		for (Entity entity : entities) if (entityClass.isAssignableFrom(entity.getClass())) list.add((T)entity);
-		return list;
-	}
 	public static ArrayList<Entity> getEntities(Class<? extends Entity>... entityClasses) {
 		ArrayList<Entity> list = new ArrayList<Entity>();
 		for (Entity entity : entities) for (Class<? extends Entity> cls : entityClasses) if (cls.isAssignableFrom(entity.getClass())) list.add(entity);
