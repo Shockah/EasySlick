@@ -23,7 +23,7 @@ public class TestCenterOfRotation {
 		
 		protected void onCreate() {
 			img = EHandler.newImage("pl/shockah/easyslick/tests/pngFile2.png");
-			img.setCenterOfRotation(img.getWidth()/4f,img.getHeight()/2f);
+			img.setOffset(img.getWidth()/4f,img.getHeight()/2f);
 		}
 		
 		protected void onTick() {

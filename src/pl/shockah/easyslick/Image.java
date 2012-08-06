@@ -7,8 +7,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.renderer.SGL;
 
 public class Image extends org.newdawn.slick.Image {
-	protected float oX = 0f, oY = 0f;
-	private boolean initCenter = false;
+	protected float oX = 0f, oY = 0f, cX = 0f, cY = 0f;
 	
 	public Image() {super();}
 	public Image(String path) throws SlickException {super(path);}
@@ -29,14 +28,9 @@ public class Image extends org.newdawn.slick.Image {
 	}
 	
 	public void draw(float x, float y, float x2, float y2, float srcx, float srcy, float srcx2, float srcy2, Color filter) {
-		if (!initCenter) {
-			setCenterOfRotation(0,0);
-			initCenter = true;
-		}
-		
 		float sH = (x2-x)/getWidth(), sV = (y2-y)/getHeight();
-		x -= oX*sH; x2 -= oX*sH; x -= centerX*sH; x2 -= centerX*sH;
-		y -= oY*sV; y2 -= oY*sV; y -= centerY*sV; y2 -= centerY*sV;
+		x -= oX*sH; x2 -= oX*sH;
+		y -= oY*sV; y2 -= oY*sV;
 		
 		init();
 
@@ -50,9 +44,9 @@ public class Image extends org.newdawn.slick.Image {
 		
 		GL.glTranslatef(x, y, 0);
         if (angle != 0) {
-	        GL.glTranslatef(centerX*sH, centerY*sV, 0.0f); 
-	        if (angle != 0) GL.glRotatef(angle, 0.0f, 0.0f, 1.0f); 
-	        GL.glTranslatef(-centerX*sH, -centerY*sV, 0.0f); 
+	        GL.glTranslatef(cX*sH, cY*sV, 0.0f); 
+	        GL.glRotatef(angle, 0.0f, 0.0f, 1.0f); 
+	        GL.glTranslatef(-cX*sH, -cY*sV, 0.0f); 
         }
         
         GL.glBegin(SGL.GL_QUADS); 
@@ -60,22 +54,17 @@ public class Image extends org.newdawn.slick.Image {
         GL.glEnd(); 
         
         if (angle != 0) {
-	        GL.glTranslatef(centerX*sH, centerY*sV, 0.0f); 
-	        if (angle != 0) GL.glRotatef(-angle, 0.0f, 0.0f, 1.0f); 
-	        GL.glTranslatef(-centerX*sH, -centerY*sV, 0.0f); 
+	        GL.glTranslatef(cX*sH, cY*sV, 0.0f); 
+	        GL.glRotatef(-angle, 0.0f, 0.0f, 1.0f); 
+	        GL.glTranslatef(-cX*sH, -cY*sV, 0.0f); 
         }
         GL.glTranslatef(-x, -y, 0);
 	}
 	
 	public void draw(float x, float y, float width, float height, Color filter) {
-		if (!initCenter) {
-			setCenterOfRotation(0,0);
-			initCenter = true;
-		}
-		
 		float sH = width/getWidth(), sV = height/getHeight();
-		x -= oX*sH; x -= centerX*sH;
-		y -= oY*sV; y -= centerY*sH;
+		x -= oX*sH;
+		y -= oY*sV;
 		
 		if (alpha != 1) {
     		if (filter == null) filter = Color.white;
@@ -87,25 +76,29 @@ public class Image extends org.newdawn.slick.Image {
         texture.bind(); 
         GL.glTranslatef(x, y, 0);
         
-        GL.glTranslatef(centerX*sH, centerY*sV, 0.0f); 
-        if (angle != 0) GL.glRotatef(angle, 0.0f, 0.0f, 1.0f); 
-        GL.glTranslatef(-centerX*sH, -centerY*sV, 0.0f);
+        if (angle != 0) {
+	        GL.glTranslatef(cX*sH, cY*sV, 0.0f); 
+	        GL.glRotatef(angle, 0.0f, 0.0f, 1.0f); 
+	        GL.glTranslatef(-cX*sH, -cY*sV, 0.0f);
+        }
         
         GL.glBegin(SGL.GL_QUADS); 
         drawEmbedded(0,0,width,height); 
         GL.glEnd(); 
         
-        GL.glTranslatef(centerX*sH, centerY*sV, 0.0f); 
-        if (angle != 0) GL.glRotatef(-angle, 0.0f, 0.0f, 1.0f); 
-        GL.glTranslatef(-centerX*sH, -centerY*sV, 0.0f);
+        if (angle != 0) {
+	        GL.glTranslatef(cX*sH, cY*sV, 0.0f); 
+	        GL.glRotatef(-angle, 0.0f, 0.0f, 1.0f); 
+	        GL.glTranslatef(-cX*sH, -cY*sV, 0.0f);
+        }
 	        
         GL.glTranslatef(-x, -y, 0);
 	}
 	public void drawFlash(float x, float y, float width, float height, Color col) {
-		super.drawFlash(x-oX-centerX,y-oY-centerY,width,height,col);
+		super.drawFlash(x-oX,y-oY,width,height,col);
 	}
 	public void drawSheared(float x, float y, float hshear, float vshear) {
-		super.drawSheared(x-oX-centerX,y-oY-centerY,hshear,vshear);
+		super.drawSheared(x-oX,y-oY,hshear,vshear);
 	}
 	
 	public Image getSubImage(int x,int y,int width,int height) {
@@ -131,17 +124,18 @@ public class Image extends org.newdawn.slick.Image {
 	public void rotate(float angle) {super.rotate(-angle);}
 	
 	public void setCenterOfRotation(float x, float y) {
-		if (!initCenter) {
-			super.setCenterOfRotation(0,0);
-			initCenter = true;
-		}
-		super.setCenterOfRotation(x,y);
+		cX = x;
+		cY = y;
 	}
-	public void setOffset(float x, float y) {
+	public void setShift(float x, float y) {
 		oX = x; oY = y;
 	}
+	public void setOffset(float x, float y) {
+		setCenterOfRotation(x,y);
+		setShift(x,y);
+	}
 	public void center() {
-		setCenterOfRotation(getWidth()/2f,getHeight()/2f);
+		setOffset(getWidth()/2f,getHeight()/2f);
 	}
 	
 	public void drawTiled(float x, float y) {drawTiled(x,y,Color.white);}
