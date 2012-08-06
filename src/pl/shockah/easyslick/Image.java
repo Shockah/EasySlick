@@ -8,6 +8,7 @@ import org.newdawn.slick.opengl.renderer.SGL;
 
 public class Image extends org.newdawn.slick.Image {
 	protected float oX = 0f, oY = 0f;
+	private boolean initCenter = false;
 	
 	public Image() {super();}
 	public Image(String path) throws SlickException {super(path);}
@@ -28,6 +29,11 @@ public class Image extends org.newdawn.slick.Image {
 	}
 	
 	public void draw(float x, float y, float x2, float y2, float srcx, float srcy, float srcx2, float srcy2, Color filter) {
+		if (!initCenter) {
+			setCenterOfRotation(0,0);
+			initCenter = true;
+		}
+		
 		float sH = (x2-x)/getWidth(), sV = (y2-y)/getHeight();
 		x -= oX*sH; x2 -= oX*sH; x -= centerX*sH; x2 -= centerX*sH;
 		y -= oY*sV; y2 -= oY*sV; y -= centerY*sV; y2 -= centerY*sV;
@@ -62,6 +68,11 @@ public class Image extends org.newdawn.slick.Image {
 	}
 	
 	public void draw(float x, float y, float width, float height, Color filter) {
+		if (!initCenter) {
+			setCenterOfRotation(0,0);
+			initCenter = true;
+		}
+		
 		float sH = width/getWidth(), sV = height/getHeight();
 		x -= oX*sH; x -= centerX*sH;
 		y -= oY*sV; y -= centerY*sH;
@@ -91,10 +102,10 @@ public class Image extends org.newdawn.slick.Image {
         GL.glTranslatef(-x, -y, 0);
 	}
 	public void drawFlash(float x, float y, float width, float height, Color col) {
-		super.drawFlash(x-oX,y-oY,width,height,col);
+		super.drawFlash(x-oX-centerX,y-oY-centerY,width,height,col);
 	}
 	public void drawSheared(float x, float y, float hshear, float vshear) {
-		super.drawSheared(x-oX,y-oY,hshear,vshear);
+		super.drawSheared(x-oX-centerX,y-oY-centerY,hshear,vshear);
 	}
 	
 	public Image getSubImage(int x,int y,int width,int height) {
@@ -111,8 +122,6 @@ public class Image extends org.newdawn.slick.Image {
 		sub.width = width;
 		sub.height = height;
 		sub.ref = ref;
-		sub.centerX = width/2;
-		sub.centerY = height/2;
 		
 		return sub;
 	}
@@ -121,6 +130,13 @@ public class Image extends org.newdawn.slick.Image {
 	public void setRotation(float angle) {super.setRotation(-angle);}
 	public void rotate(float angle) {super.rotate(-angle);}
 	
+	public void setCenterOfRotation(float x, float y) {
+		if (!initCenter) {
+			super.setCenterOfRotation(0,0);
+			initCenter = true;
+		}
+		super.setCenterOfRotation(x,y);
+	}
 	public void setOffset(float x, float y) {
 		oX = x; oY = y;
 	}
