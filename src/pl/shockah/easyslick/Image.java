@@ -29,8 +29,8 @@ public class Image extends org.newdawn.slick.Image {
 	
 	public void draw(float x, float y, float x2, float y2, float srcx, float srcy, float srcx2, float srcy2, Color filter) {
 		float sH = (x2-x)/getWidth(), sV = (y2-y)/getHeight();
-		x -= oX*sH; x2 -= oX*sH;
-		y -= oY*sV; y2 -= oY*sV;
+		x -= oX*sH; x2 -= oX*sH; x -= centerX*sH; x2 -= centerX*sH;
+		y -= oY*sV; y2 -= oY*sV; y -= centerY*sV; y2 -= centerY*sV;
 		
 		init();
 
@@ -63,8 +63,8 @@ public class Image extends org.newdawn.slick.Image {
 	
 	public void draw(float x, float y, float width, float height, Color filter) {
 		float sH = width/getWidth(), sV = height/getHeight();
-		x -= oX*sH;
-		y -= oY*sV;
+		x -= oX*sH; x -= centerX*sH;
+		y -= oY*sV; y -= centerY*sH;
 		
 		if (alpha != 1) {
     		if (filter == null) filter = Color.white;
@@ -125,7 +125,6 @@ public class Image extends org.newdawn.slick.Image {
 		oX = x; oY = y;
 	}
 	public void center() {
-		setOffset(getWidth()/2f,getHeight()/2f);
 		setCenterOfRotation(getWidth()/2f,getHeight()/2f);
 	}
 	
