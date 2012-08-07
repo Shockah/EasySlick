@@ -11,8 +11,8 @@ public class AnimMultiple implements IAnim {
 	}
 	
 	public ArrayList<AnimMultipleLine> getLines() {return new ArrayList<AnimMultipleLine>(lines);}
-	public void addLine(AnimMultipleLine line) {lines.add(line);}
-	public void removeLine(AnimMultipleLine line) {lines.remove(line);};
+	public void addLines(AnimMultipleLine... lines) {for (AnimMultipleLine line : lines) this.lines.add(line);}
+	public void removesLine(AnimMultipleLine... lines) {for (AnimMultipleLine line : lines) this.lines.remove(line);};
 	
 	public void updateStep() {updateStep(1f);}
 	public void updateStep(float steps) {

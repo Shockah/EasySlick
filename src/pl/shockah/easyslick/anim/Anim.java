@@ -24,7 +24,12 @@ public class Anim implements IAnim {
 		}
 		states.add(new Pair<Float,AnimState>(step,state));
 	}
+	public void copyFirstState(float step) {
+		if (states.isEmpty()) return;
+		addState(step,states.get(0).get2());
+	}
 	public void copyLastState(float step) {
+		if (states.isEmpty()) return;
 		AnimState state = states.get(states.size()-1).get2();
 		addState(step,state);
 	}
