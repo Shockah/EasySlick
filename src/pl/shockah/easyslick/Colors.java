@@ -4,23 +4,8 @@ import org.newdawn.slick.Color;
 
 public final class Colors {
 	public static Color makeHSV(float H, float S, float V) {
-		float i,f,p,q,t, R = 0f, G = 0f, B = 0f;
-		
-		if (V == 0) R = G = B = 0; else {
-			i = (float)Math.floor(H/60f);
-			f = H-i;
-			p = V*(1-S);
-			q = V*(1-(S*f));
-			t = V*(1-(S*(1-f)));
-			if (i == 0) {R = V; G = t; B = p;}
-			else if (i == 1) {R = q; G = V; B = p;}
-			else if (i == 2) {R = p; G = V; B = t;}
-			else if (i == 3) {R = p; G = q; B = V;}
-			else if (i == 4) {R = t; G = p; B = V;}
-			else if (i == 5) {R = V; G = p; B = q;}
-		}
-		
-		return new Color(R,G,B);
+		java.awt.Color awtc = java.awt.Color.getHSBColor(H,S,V);
+		return new Color(awtc.getRed()/255f,awtc.getGreen()/255f,awtc.getBlue()/255f);
 	}
 	
 	public static Color alpha(float alpha) {return alpha(Color.white,alpha);}

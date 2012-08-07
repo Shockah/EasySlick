@@ -37,7 +37,7 @@ public class TestAudio {
 			maxFPS = 60;
 		}
 		
-		protected void onTick() {
+		protected void onTick(int delta) {
 			if (Key.pressed(Input.KEY_Z) || Key.pressed(Input.KEY_X) || Key.pressed(Input.KEY_C)) audio.stop();
 			if (Key.pressed(Input.KEY_Z)) audio = midi;
 			if (Key.pressed(Input.KEY_X)) audio = sample;

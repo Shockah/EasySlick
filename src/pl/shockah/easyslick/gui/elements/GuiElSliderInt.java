@@ -45,7 +45,7 @@ public class GuiElSliderInt extends GuiEl {
 		super.onTick(tick);
 		if (pressed) {
 			float posX = Window.mouse.x-(pos.x+(slider.x/2));
-			value = Math2.limit(Math.round((posX/(size.x-slider.x))*maxValue),0,maxValue);
+			value = Math2.limitI(Math.round((posX/(size.x-slider.x))*maxValue),0,maxValue);
 		}
 	}
 

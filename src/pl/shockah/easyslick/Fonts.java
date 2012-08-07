@@ -88,6 +88,7 @@ public class Fonts {
 	
 	public static String getStringWordwrap(Font font, String text, float maxWidth) {
 		String ret = "";
+		text = text.replace("\t","    ");
 		String[] lines = text.split("\\n");
 		
 		for (int i = 0; i < lines.length; i++) {

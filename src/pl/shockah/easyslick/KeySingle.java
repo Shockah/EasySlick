@@ -4,8 +4,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.KeyListener;
 
 public class KeySingle extends Key implements KeyListener {
-	private int key;
-	private boolean tmpPressed = false, tmpReleased = false;
+	protected int key;
+	protected boolean tmpPressed = false, tmpReleased = false;
 	
 	public KeySingle(int key) {
 		this.key = key;

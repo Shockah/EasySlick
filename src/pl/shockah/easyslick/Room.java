@@ -62,7 +62,7 @@ public class Room {
 	protected void setupRoom() {}
 	protected void onCreate() {}
 	protected void onEnd() {}
-	protected void onTick() {}
+	protected void onTick(int delta) {}
 	protected void onRender(GraphicsHelper gh) {}
 	
 	protected final void setSize(int w, int h) {
