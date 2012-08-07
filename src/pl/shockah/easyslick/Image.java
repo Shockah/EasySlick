@@ -33,32 +33,32 @@ public class Image extends org.newdawn.slick.Image {
 		y -= oY*sV; y2 -= oY*sV;
 		
 		init();
-
-    	if (alpha != 1) {
-    		if (filter == null) filter = Color.white;
-    		filter = new Color(filter);
-    		filter.a *= alpha;
-    	}
+		
+		if (alpha != 1) {
+			if (filter == null) filter = Color.white;
+			filter = new Color(filter);
+			filter.a *= alpha;
+		}
 		filter.bind();
 		texture.bind();
 		
-		GL.glTranslatef(x, y, 0);
-        if (angle != 0) {
-	        GL.glTranslatef(cX*sH, cY*sV, 0.0f); 
-	        GL.glRotatef(angle, 0.0f, 0.0f, 1.0f); 
-	        GL.glTranslatef(-cX*sH, -cY*sV, 0.0f); 
-        }
-        
-        GL.glBegin(SGL.GL_QUADS); 
-        drawEmbedded(0,0,x2-x,y2-y,srcx,srcy,srcx2,srcy2);
-        GL.glEnd(); 
-        
-        if (angle != 0) {
-	        GL.glTranslatef(cX*sH, cY*sV, 0.0f); 
-	        GL.glRotatef(-angle, 0.0f, 0.0f, 1.0f); 
-	        GL.glTranslatef(-cX*sH, -cY*sV, 0.0f); 
-        }
-        GL.glTranslatef(-x, -y, 0);
+		GL.glTranslatef(x,y,0);
+		if (angle != 0) {
+			GL.glTranslatef(cX*sH,cY*sV,0f);
+			GL.glRotatef(angle,0f,0f,1f);
+			GL.glTranslatef(-cX*sH,-cY*sV,0f);
+		}
+		
+		GL.glBegin(SGL.GL_QUADS);
+		drawEmbedded(0,0,x2-x,y2-y,srcx,srcy,srcx2,srcy2);
+		GL.glEnd();
+		
+		if (angle != 0) {
+			GL.glTranslatef(cX*sH,cY*sV,0f);
+			GL.glRotatef(-angle,0f,0f,1f);
+			GL.glTranslatef(-cX*sH,-cY*sV,0f);
+		}
+		GL.glTranslatef(-x,-y,0);
 	}
 	
 	public void draw(float x, float y, float width, float height, Color filter) {
@@ -67,32 +67,32 @@ public class Image extends org.newdawn.slick.Image {
 		y -= oY*sV;
 		
 		if (alpha != 1) {
-    		if (filter == null) filter = Color.white;
-    		filter = new Color(filter);
-    		filter.a *= alpha;
-    	}
-        if (filter != null) filter.bind(); 
-       
-        texture.bind(); 
-        GL.glTranslatef(x, y, 0);
-        
-        if (angle != 0) {
-	        GL.glTranslatef(cX*sH, cY*sV, 0.0f); 
-	        GL.glRotatef(angle, 0.0f, 0.0f, 1.0f); 
-	        GL.glTranslatef(-cX*sH, -cY*sV, 0.0f);
-        }
-        
-        GL.glBegin(SGL.GL_QUADS); 
-        drawEmbedded(0,0,width,height); 
-        GL.glEnd(); 
-        
-        if (angle != 0) {
-	        GL.glTranslatef(cX*sH, cY*sV, 0.0f); 
-	        GL.glRotatef(-angle, 0.0f, 0.0f, 1.0f); 
-	        GL.glTranslatef(-cX*sH, -cY*sV, 0.0f);
-        }
-	        
-        GL.glTranslatef(-x, -y, 0);
+			if (filter == null) filter = Color.white;
+			filter = new Color(filter);
+			filter.a *= alpha;
+		}
+		if (filter != null) filter.bind();
+		
+		texture.bind();
+		GL.glTranslatef(x,y,0);
+		
+		if (angle != 0) {
+			GL.glTranslatef(cX*sH,cY*sV,0f);
+			GL.glRotatef(angle,0f,0f,1f);
+			GL.glTranslatef(-cX*sH,-cY*sV,0f);
+		}
+		
+		GL.glBegin(SGL.GL_QUADS);
+		drawEmbedded(0,0,width,height);
+		GL.glEnd();
+		
+		if (angle != 0) {
+			GL.glTranslatef(cX*sH,cY*sV,0f);
+			GL.glRotatef(-angle,0f,0f,1f);
+			GL.glTranslatef(-cX*sH,-cY*sV,0f);
+		}
+		
+		GL.glTranslatef(-x,-y,0);
 	}
 	public void drawFlash(float x, float y, float width, float height, Color col) {
 		super.drawFlash(x-oX,y-oY,width,height,col);

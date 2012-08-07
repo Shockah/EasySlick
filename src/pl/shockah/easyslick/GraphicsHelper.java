@@ -10,6 +10,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.opengl.TextureImpl;
 import org.newdawn.slick.opengl.renderer.SGL;
 import pl.shockah.Reflection;
+import pl.shockah.easyslick.anim.AnimState;
+import pl.shockah.easyslick.anim.IAnim;
 
 public class GraphicsHelper {
 	public static final int
@@ -28,6 +30,9 @@ public class GraphicsHelper {
 	protected final Graphics g;
 	protected SGL gl = null;
 	protected int oldBlendMode = BM_NORMAL, blendMode = BM_NORMAL;
+	
+	protected AnimState stateNew = null;
+	protected Color stateColor = null;
 	
 	public static Graphics getGraphics() {
 		try {
@@ -150,5 +155,43 @@ public class GraphicsHelper {
 	}
 	public void drawImageScaled(Image image, float x, float y, float scaleH, float scaleV, Color color) {
 		g.drawImage(image,x,y,x+(image.getWidth()*scaleH),y+(image.getHeight()*scaleV),0,0,image.getWidth(),image.getHeight(),color);
+	}
+	
+	public void drawImage(Image image, float x, float y, IAnim anim) {
+		drawImage(image,x,y,1f,1f,anim.getCurrentState());
+	}
+	public void drawImage(Image image, float x, float y, AnimState state) {
+		drawImage(image,x,y,1f,1f,state);
+	}
+	public void drawImage(Image image, float x, float y, float baseScaleH, float baseScaleV, IAnim anim) {
+		drawImage(image,x,y,baseScaleH,baseScaleV,anim.getCurrentState());
+	}
+	public void drawImage(Image image, float x, float y, float baseScaleH, float baseScaleV, AnimState state) {
+		float old = image.getRotation();
+		image.setRotation(old+state.angle);
+		g.drawImage(image,x+state.pos.x,y+state.pos.y,x+state.pos.x+(image.getWidth()*state.scaleH*baseScaleH),y+state.pos.y+(image.getHeight()*state.scaleV*baseScaleV),0,0,image.getWidth(),image.getHeight(),state.color);
+		image.setRotation(old);
+	}
+	public void setAnimState(AnimState state) {
+		if (state != null) resetAnimState();
+		
+		getPrivates();
+		stateColor = g.getColor();
+		stateNew = new AnimState(state);
+		
+		g.setColor(state.color); state.color.bind();
+		if (state.pos.x != 0 || state.pos.y != 0) gl.glTranslatef(-state.pos.x,-state.pos.y,0f);
+		if (state.angle != 0) gl.glRotatef(-state.angle,0f,0f,1f);
+		if (state.scaleH != 1 || state.scaleV != 1) gl.glScalef(1f/state.scaleH,1f/state.scaleV,1f);
+	}
+	public void resetAnimState() {
+		if (stateNew == null) return;
+		
+		if (stateNew.scaleH != 1 || stateNew.scaleV != 1) gl.glScalef(stateNew.scaleH,stateNew.scaleV,1f);
+		if (stateNew.angle != 0) gl.glRotatef(stateNew.angle,0f,0f,1f);
+		if (stateNew.pos.x != 0 || stateNew.pos.y != 0) gl.glTranslatef(stateNew.pos.x,stateNew.pos.y,0f);
+		Color.white.bind(); g.setColor(stateColor);
+		
+		stateNew = null;
 	}
 }

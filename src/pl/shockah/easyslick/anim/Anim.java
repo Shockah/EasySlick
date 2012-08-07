@@ -2,10 +2,8 @@ package pl.shockah.easyslick.anim;
 
 import java.util.ArrayList;
 import pl.shockah.Pair;
-import pl.shockah.easyslick.GraphicsHelper;
-import pl.shockah.easyslick.Image;
 
-public class Anim {
+public class Anim implements IAnim {
 	protected ArrayList<Pair<Float,AnimState>> states = new ArrayList<Pair<Float,AnimState>>();
 	protected float step = 0f;
 	public boolean looping = true;
@@ -75,10 +73,5 @@ public class Anim {
 			}
 		}
 		return new AnimState();
-	}
-	
-	public void drawImage(GraphicsHelper gh, Image image, float x, float y) {drawImage(gh,image,x,y,1f,1f);}
-	public void drawImage(GraphicsHelper gh, Image image, float x, float y, float baseScaleH, float baseScaleV) {
-		getCurrentState().drawImage(gh,image,x,y,baseScaleH,baseScaleV);
 	}
 }

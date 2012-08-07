@@ -36,6 +36,6 @@ public class Particle {
 		type.anim.setStep(tick);
 		AnimState state = type.anim.getCurrentState();
 		state.angle += angle;
-		state.drawImage(gh,type.image,pos.x,pos.y,1f/type.image.getWidth(),1f/type.image.getHeight());
+		gh.drawImage(type.image,pos.x,pos.y,1f/type.image.getWidth(),1f/type.image.getHeight(),state);
 	}
 }
