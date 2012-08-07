@@ -1,13 +1,17 @@
 package pl.shockah.easyslick.anim;
 
-import pl.shockah.Pair;
+import org.newdawn.slick.geom.Polygon;
 
 public class AnimMultipleLine extends Anim {
 	protected boolean myPos = false, myColor = false, myAngle = false, myScale = false;
 	
 	public AnimMultipleLine() {}
+	public AnimMultipleLine(Polygon p, float pixelsPerTick) {
+		super(p,pixelsPerTick);
+		usePos(true);
+	}
 	public AnimMultipleLine(Anim other) {
-		for (Pair<Float,AnimState> pair : other.states) states.add(new Pair<Float,AnimState>(pair.get1(),new AnimState(pair.get2())));
+		super(other);
 	}
 	public AnimMultipleLine(AnimMultipleLine other) {
 		this((Anim)other);

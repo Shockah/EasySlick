@@ -1,6 +1,9 @@
 package pl.shockah.easyslick.anim;
 
 import java.util.ArrayList;
+import org.newdawn.slick.geom.Line;
+import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Vector2f;
 import pl.shockah.Pair;
 
 public class Anim implements IAnim {
@@ -9,6 +12,28 @@ public class Anim implements IAnim {
 	public boolean looping = true;
 	
 	public Anim() {}
+	public Anim(Polygon p, float pixelsPerTick) {
+		float dist = 0;
+		
+		if (p == null) throw new RuntimeException("Polygon can't be null");
+		if (pixelsPerTick <= 0) throw new RuntimeException("pixelsPerTick can't be <= 0");
+		
+		looping = p.closed();
+		for (int i = 0; i < p.getPointCount(); i++) {
+			float[] point = p.getPoint(i);
+			if (i != 0) {
+				float[] pointPrev = p.getPoint(i-1);
+				dist += new Line(pointPrev[0],pointPrev[1],point[0],point[1]).length();
+			}
+			addState(dist/pixelsPerTick,new AnimState().setPos(new Vector2f(point[0],point[1])));
+		}
+		if (p.closed()) {
+			float[] pointPrev = p.getPoint(p.getPointCount()-1);
+			float[] point = p.getPoint(0);
+			dist += new Line(pointPrev[0],pointPrev[1],point[0],point[1]).length();
+			addState(dist/pixelsPerTick,new AnimState().setPos(new Vector2f(point[0],point[1])));
+		}
+	}
 	public Anim(Anim other) {
 		for (Pair<Float,AnimState> pair : other.states) states.add(new Pair<Float,AnimState>(pair.get1(),new AnimState(pair.get2())));
 	}

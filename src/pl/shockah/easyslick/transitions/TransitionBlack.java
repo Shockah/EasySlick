@@ -11,8 +11,8 @@ public class TransitionBlack extends Transition {
 	
 	public TransitionBlack(boolean out, int ticks) {
 		super();
-		anim.addState(new AnimState(new Color(0f,0f,0f,out ? 0f : 1f)));
-		anim.addState(ticks,new AnimState(new Color(0f,0f,0f,out ? 1f : 0f)));
+		anim.addState(new AnimState().setColor(new Color(0f,0f,0f,out ? 0f : 1f)));
+		anim.addState(ticks,new AnimState().setColor(new Color(0f,0f,0f,out ? 1f : 0f)));
 	}
 	
 	protected void onTick(int tick) {
