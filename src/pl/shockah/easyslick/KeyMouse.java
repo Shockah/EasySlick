@@ -4,8 +4,8 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.MouseListener;
 
 public class KeyMouse extends Key implements MouseListener {
-	private int button;
-	private boolean tmpPressed = false, tmpReleased = false;
+	protected int button;
+	protected boolean tmpPressed = false, tmpReleased = false;
 	
 	public KeyMouse(int button) {
 		this.button = button;

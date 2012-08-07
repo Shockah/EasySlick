@@ -26,7 +26,7 @@ public class TestCenterOfRotation {
 			img.setOffset(img.getWidth()/4f,img.getHeight()/2f);
 		}
 		
-		protected void onTick() {
+		protected void onTick(int delta) {
 			angle += 2;
 		}
 		protected void onRender(GraphicsHelper gh) {

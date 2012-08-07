@@ -69,7 +69,7 @@ public final class App extends BasicGame implements IGameLoop,Thread.UncaughtExc
 		Entity.doTick(delta,tickOnlySpecial);
 		
 		if (!tickOnlySpecial) {
-			Room.get().onTick();
+			Room.get().onTick(delta);
 			if (hooks != null) hooks.onTick(delta);
 		}
 	}
