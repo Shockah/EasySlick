@@ -13,6 +13,9 @@ public class KeyMouse extends Key implements MouseListener {
 	protected void register(Input input) {
 		input.addMouseListener(this);
 	}
+	protected void unregister(Input input) {
+		input.removeMouseListener(this);
+	}
 	
 	protected void updateStates(Input input) {
 		if (tmpPressed) down = true;

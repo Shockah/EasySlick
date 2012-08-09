@@ -26,9 +26,25 @@ public abstract class Key {
 		for (Key key : keysList) key.updateStates(App.getAppGameContainer().getInput());
 	}
 	
+	public static void registerKey(Key key, Input input) {
+		keysList.add(key);
+		key.register(input);
+	}
+	public static void registerKey(Key key) {
+		registerKey(key,App.getAppGameContainer().getInput());
+	}
+	public static void unregisterKey(Key key, Input input) {
+		keysList.remove(key);
+		key.unregister(input);
+	}
+	public static void unregisterKey(Key key) {
+		unregisterKey(key,App.getAppGameContainer().getInput());
+	}
+	
 	protected boolean pressed = false, released = false, down = false;
 	
 	protected abstract void register(Input input);
+	protected abstract void unregister(Input input);
 	protected abstract void updateStates(Input input);
 	
 	public final boolean pressed() {return pressed;}

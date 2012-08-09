@@ -13,6 +13,9 @@ public class KeySingle extends Key implements KeyListener {
 	protected void register(Input input) {
 		input.addKeyListener(this);
 	}
+	protected void unregister(Input input) {
+		input.removeKeyListener(this);
+	}
 	
 	protected void updateStates(Input input) {
 		if (tmpPressed) down = true;
