@@ -7,6 +7,10 @@ import pl.shockah.easyslick.transitions.Transition;
 
 public abstract class Entity extends Render {
 	private static ArrayList<Entity> entities = new ArrayList<Entity>(), toRemove = new ArrayList<Entity>(), toAdd = new ArrayList<Entity>();
+	private static ArrayList<EntityEvent> eventsGlobal = new ArrayList<EntityEvent>();
+	
+	public static void addGlobalEvent(EntityEvent event) {eventsGlobal.add(event);}
+	public void removeGlobalEvent(EntityEvent event) {eventsGlobal.remove(event);}
 	
 	public static void clear() {clear(false);}
 	protected static void clear(boolean force) {
@@ -42,22 +46,27 @@ public abstract class Entity extends Render {
 		return list;
 	}
 	
-	protected boolean didOnAfterCreate = false;
-	protected boolean checkCollision = true;
-	
+	protected boolean didOnAfterCreate = false, checkCollision = true, persistent = false;
 	public Shape shape = null;
 	public Vector2f pos = new Vector2f(), shapeOffset = new Vector2f();
-	protected boolean persistent = false;
+	protected ArrayList<EntityEvent> events = new ArrayList<EntityEvent>();
+	
+	protected void addEvent(EntityEvent event) {events.add(event);}
+	protected void removeEvent(EntityEvent event) {events.remove(event);}
 	
 	protected final void tick(int delta) {
 		updateShape();
 		if (!didOnAfterCreate) {onAfterCreate(); didOnAfterCreate = true;}
 		onTick(delta);
 		updateShape();
+		for (EntityEvent ev : eventsGlobal) if (ev.tick) ev.run(this);
+		for (EntityEvent ev : events) if (ev.tick) ev.run(this);
 	}
 	protected final void render(GraphicsHelper gh) {
 		if (!didOnAfterCreate) {onAfterCreate(); didOnAfterCreate = true;}
 		onRender(gh);
+		for (EntityEvent ev : eventsGlobal) if (ev.render) ev.run(this);
+		for (EntityEvent ev : events) if (ev.render) ev.run(this);
 	}
 	
 	public final void create(Vector2f pos) {create(pos.x,pos.y);}
