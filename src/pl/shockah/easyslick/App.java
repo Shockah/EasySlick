@@ -47,13 +47,8 @@ public final class App extends BasicGame implements IGameLoop,Thread.UncaughtExc
 	public void render(GameContainer container, Graphics g) {
 		if (gh == null) gh = new GraphicsHelper(g);
 		
-		g.translate(-Room.get().viewPos.x,-Room.get().viewPos.y);
-		g.clearWorldClip();
-		g.setWorldClip(0,0,(int)Room.get().viewSize.x,(int)Room.get().viewSize.y);
-		
 		if (hooks != null) hooks.preRender(gh);
-		Render.doRender(gh);
-		Room.get().onRender(gh);
+		View.render(gh);
 		if (hooks != null) hooks.onRender(gh);
 	}
 	

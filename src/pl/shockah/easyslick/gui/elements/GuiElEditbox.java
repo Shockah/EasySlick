@@ -104,8 +104,7 @@ public class GuiElEditbox extends GuiElSelectable {
 			text = tmp.toString();
 		}
 		
-		Rectangle clip = gh.g().getClip();
-		gh.g().setClip(new Rectangle(pos.x+padding,pos.y,size.x-padding*2,size.y));
+		gh.setClip(new Rectangle(pos.x+padding,pos.y,size.x-padding*2,size.y));
 		
 		float wText = gh.g().getFont().getWidth(text), wSelect = gh.g().getFont().getWidth(text.substring(0,listener.getCursorPos()));
 		float shift = wText < size.x-padding*2 ? 0 : Math.min(Math.max(wSelect-size.x/2f,0),wText-size.x+padding*2);
@@ -122,7 +121,7 @@ public class GuiElEditbox extends GuiElSelectable {
 			if (!text.isEmpty()) xx = gh.g().getFont().getWidth(text.substring(0,listener.getCursorPos()))-2;
 			Fonts.drawString(gh,"|",xOnView(pos.x+xx)+padding-shift,yOnView(pos.y)+size.y/2f);
 		}
-		gh.g().setClip(clip);
+		gh.resetClip();
 		Fonts.resetFontAlign();
 	}
 	

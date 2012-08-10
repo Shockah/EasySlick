@@ -31,13 +31,18 @@ public final class Window {
 	}
 	
 	protected static void updateMouse() {
+		View view = View.getDefault();
+		if (view != null) updateMouse(view);
+	}
+	protected static void updateMouse(View view) {
 		if (!init) {
 			try {
 				Reflection.invokePrivateMethod(Reflection.getPrivateMethod(Input.class,"init",int.class),App.getAppGameContainer().getInput(),(int)Room.get().viewSize.y);
 			} catch (Exception e) {App.getApp().handle(e);}
 			init = true;
 		}
-		mouse.set(Mouse.getX()+Room.get().viewPos.x,(Room.get().viewSize.y-Mouse.getY())+Room.get().viewPos.y-1);
+		Vector2f scale = view.getScale();
+		mouse.set((Mouse.getX()+view.pos.x)*scale.x,((Room.get().viewSize.y-Mouse.getY())+view.pos.y-1)*scale.y);
 	}
 	public static boolean mouseInRegion(Vector2f p1, Vector2f p2) {
 		return mouse.x >= p1.x && mouse.y >= p1.y && mouse.x < p2.x && mouse.y < p2.y;

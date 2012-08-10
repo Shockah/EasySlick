@@ -8,6 +8,7 @@ import org.newdawn.slick.Input;
 public abstract class Key {
 	protected static ArrayList<Key> keysList = new ArrayList<Key>();
 	protected static Key[] keys = new Key[256];
+	protected static Key keyAnyKey = new KeyAnyKey();
 	
 	protected static void registerAllKeys() {
 		Field[] fields = Input.class.getDeclaredFields();
@@ -21,6 +22,8 @@ public abstract class Key {
 				} catch (Exception e) {App.getApp().handle(e);}
 			}
 		}
+		
+		keyAnyKey.register(App.getAppGameContainer().getInput());
 	}
 	protected static void updateKeys() {
 		for (Key key : keysList) key.updateStates(App.getAppGameContainer().getInput());

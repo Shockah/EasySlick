@@ -10,7 +10,7 @@ public class Room {
 	protected static ETransition transition = ETransition.None;
 	
 	public int maxFPS = 300;
-	public Vector2f size = new Vector2f(640,480), viewPos = new Vector2f(), viewSize = size.copy();
+	public Vector2f size = new Vector2f(640,480), viewSize = size.copy();
 	
 	public static Room get() {return current;}
 	public static void set(Room room) {set(room,null,null);}
@@ -39,6 +39,7 @@ public class Room {
 			
 			Render.clear();
 			Entity.clear();
+			View.clear();
 		}
 		
 		current = changeTo;
@@ -46,6 +47,7 @@ public class Room {
 		
 		if (current != null) {
 			current.setupRoom();
+			current.createDefaultView();
 			Window.setup(current);
 			current.onCreate();
 		}
@@ -59,6 +61,10 @@ public class Room {
 		transition = ETransition.None;
 	}
 	
+	protected void createDefaultView() {
+		Vector2f v0 = new Vector2f(0,0);
+		View.add(new View(v0,viewSize,v0,viewSize,0f));
+	}
 	protected void setupRoom() {}
 	protected void onCreate() {}
 	protected void onEnd() {}

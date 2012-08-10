@@ -1,6 +1,7 @@
 package pl.shockah.easyslick;
 
 import java.lang.reflect.Method;
+import java.util.LinkedList;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.newdawn.slick.Color;
@@ -26,6 +27,9 @@ public class GraphicsHelper {
 	
 	protected static Graphics oldG;
 	protected static Method mPredraw, mPostdraw;
+	
+	protected LinkedList<Rectangle> clips = new LinkedList<Rectangle>();
+	protected Rectangle currentClip = null;
 	
 	protected final Graphics g;
 	protected SGL gl = null;
@@ -63,6 +67,23 @@ public class GraphicsHelper {
 		getPrivates();
 	}
 	public Graphics g() {return g;}
+	
+	public void setClip(Rectangle rect) {
+		if (currentClip != null) clips.push(currentClip);
+		currentClip = rect;
+		g.setClip(rect);
+	}
+	public void resetClip() {
+		if (clips.isEmpty()) {
+			if (currentClip != null) {
+				g.setClip(null);
+				currentClip = null;
+			}
+			return;
+		}
+		currentClip = clips.pop();
+		g.setClip(currentClip);
+	}
 	
 	protected void getPrivates() {
 		if (gl != null) return;
@@ -110,7 +131,6 @@ public class GraphicsHelper {
 	}
 	public void drawTriangle(Vector2f p1, Vector2f p2, Vector2f p3, Color c1, Color c2, Color c3) {
 		getPrivates();
-		float xx = -Room.get().viewPos.x, yy = -Room.get().viewPos.y;
 		
 		try {
 			Reflection.invokePrivateMethod(mPredraw,g);
@@ -118,9 +138,9 @@ public class GraphicsHelper {
 		TextureImpl.bindNone();
 		Color.white.bind();
 		gl.glBegin(SGL.GL_TRIANGLES);
-		gl.glColor4f(c1.r,c1.g,c1.b,c1.a); gl.glVertex2f(p1.x+xx,p1.y+yy);
-		gl.glColor4f(c2.r,c2.g,c2.b,c2.a); gl.glVertex2f(p2.x+xx,p2.y+yy);
-		gl.glColor4f(c3.r,c3.g,c3.b,c3.a); gl.glVertex2f(p3.x+xx,p3.y+yy);
+		gl.glColor4f(c1.r,c1.g,c1.b,c1.a); gl.glVertex2f(p1.x,p1.y);
+		gl.glColor4f(c2.r,c2.g,c2.b,c2.a); gl.glVertex2f(p2.x,p2.y);
+		gl.glColor4f(c3.r,c3.g,c3.b,c3.a); gl.glVertex2f(p3.x,p3.y);
 		gl.glEnd();
 		try {
 			Reflection.invokePrivateMethod(mPostdraw,g);
@@ -131,7 +151,6 @@ public class GraphicsHelper {
 	}
 	public void drawRectangleGradient(Vector2f p1, Vector2f p2, Color topLeft, Color topRight, Color bottomLeft, Color bottomRight) {
 		getPrivates();
-		float xx = -Room.get().viewPos.x, yy = -Room.get().viewPos.y;
 		
 		try {
 			Reflection.invokePrivateMethod(mPredraw,g);
@@ -140,10 +159,10 @@ public class GraphicsHelper {
 		Color.white.bind();
 		GL11.glBegin(GL11.GL_POLYGON);
 		Color c;
-		c = topLeft; gl.glColor4f(c.r,c.g,c.b,c.a); gl.glVertex2f(p1.x+xx,p1.y+yy);
-		c = topRight; gl.glColor4f(c.r,c.g,c.b,c.a); gl.glVertex2f(p2.x+xx,p1.y+yy);
-		c = bottomRight; gl.glColor4f(c.r,c.g,c.b,c.a); gl.glVertex2f(p2.x+xx,p2.y+yy);
-		c = bottomLeft; gl.glColor4f(c.r,c.g,c.b,c.a); gl.glVertex2f(p1.x+xx,p2.y+yy);
+		c = topLeft; gl.glColor4f(c.r,c.g,c.b,c.a); gl.glVertex2f(p1.x,p1.y);
+		c = topRight; gl.glColor4f(c.r,c.g,c.b,c.a); gl.glVertex2f(p2.x,p1.y);
+		c = bottomRight; gl.glColor4f(c.r,c.g,c.b,c.a); gl.glVertex2f(p2.x,p2.y);
+		c = bottomLeft; gl.glColor4f(c.r,c.g,c.b,c.a); gl.glVertex2f(p1.x,p2.y);
 		gl.glEnd();
 		try {
 			Reflection.invokePrivateMethod(mPostdraw,g);
@@ -180,16 +199,16 @@ public class GraphicsHelper {
 		stateNew = new AnimState(state);
 		
 		g.setColor(state.color); state.color.bind();
-		if (state.pos.x != 0 || state.pos.y != 0) gl.glTranslatef(-state.pos.x,-state.pos.y,0f);
+		if (state.pos.x != 0 || state.pos.y != 0) g.translate(-state.pos.x,-state.pos.y);
 		if (state.angle != 0) gl.glRotatef(-state.angle,0f,0f,1f);
-		if (state.scaleH != 1 || state.scaleV != 1) gl.glScalef(1f/state.scaleH,1f/state.scaleV,1f);
+		if (state.scaleH != 1 || state.scaleV != 1) g.scale(1f/state.scaleH,1f/state.scaleV);
 	}
 	public void resetAnimState() {
 		if (stateNew == null) return;
 		
-		if (stateNew.scaleH != 1 || stateNew.scaleV != 1) gl.glScalef(stateNew.scaleH,stateNew.scaleV,1f);
+		if (stateNew.scaleH != 1 || stateNew.scaleV != 1) g.scale(stateNew.scaleH,stateNew.scaleV);
 		if (stateNew.angle != 0) gl.glRotatef(stateNew.angle,0f,0f,1f);
-		if (stateNew.pos.x != 0 || stateNew.pos.y != 0) gl.glTranslatef(stateNew.pos.x,stateNew.pos.y,0f);
+		if (stateNew.pos.x != 0 || stateNew.pos.y != 0) g.translate(stateNew.pos.x,stateNew.pos.y);
 		Color.white.bind(); g.setColor(stateColor);
 		
 		stateNew = null;

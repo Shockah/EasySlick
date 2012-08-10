@@ -23,7 +23,7 @@ public abstract class Render {
 		
 		for (Render render : toAdd) addRender(render);
 		toAdd.clear();
-		for (Render render : renders) if (App.getGameLoop().canRender(render)) render.render(gh);
+		for (Render render : renders) if (App.getGameLoop().canRender(render) && View.get().canRender(render)) render.render(gh);
 	}
 	private static void addRender(Render render) {
 		for (int i = 0; i < renders.size(); i++) {
@@ -58,6 +58,8 @@ public abstract class Render {
 	public void create() {toAdd.add(this);}
 	public void destroy() {toRemove.add(this);}
 	
-	public static float xOnView(float x) {return Room.get().viewPos.x+x;}
-	public static float yOnView(float y) {return Room.get().viewPos.y+y;}
+	public static float xOnView(float x) {return xOnView(View.getDefault(),x);}
+	public static float yOnView(float y) {return xOnView(View.getDefault(),y);}
+	public static float xOnView(View view, float x) {return view.pos.x+x;}
+	public static float yOnView(View view, float y) {return view.pos.y+y;}
 }
