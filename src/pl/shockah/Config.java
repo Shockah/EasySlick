@@ -33,10 +33,10 @@ public class Config {
 	public void set(String key, float value) {set(key,new Float(value));}
 	public void set(String key, double value) {set(key,new Double(value));}
 	
-	public void add(String key, int value, int def) {setNotExists(key,def); set(key,getInt(key)+value);}
-	public void add(String key, long value, long def) {setNotExists(key,def); set(key,getLong(key)+value);}
-	public void add(String key, float value, float def) {setNotExists(key,def); set(key,getFloat(key)+value);}
-	public void add(String key, double value, double def) {setNotExists(key,def); set(key,getDouble(key)+value);}
+	public void add(String key, int value) {set(key,getInt(key)+value);}
+	public void add(String key, long value) {set(key,getLong(key)+value);}
+	public void add(String key, float value) {set(key,getFloat(key)+value);}
+	public void add(String key, double value) {set(key,getDouble(key)+value);}
 	
 	public synchronized boolean remove(String key) {
 		String[] sub = key.split("\\-\\>");
@@ -88,9 +88,19 @@ public class Config {
 	public void setNotExists(String key, double value) {setNotExists(key,new Double(value));}
 	
 	public synchronized String getString(String key) {
-		if (mapValues.containsKey(key)) return mapValues.get(key);
-		return null;
+		String[] sub = key.split("\\-\\>");
+		
+		Config cfg = this;
+		for (int i = 0; i < sub.length-1; i++) cfg = cfg.getConfig(sub[i]);
+		return cfg.getString(sub[sub.length-1],true);
 	}
+	protected synchronized String getString(String key, boolean direct) {
+		if (direct) {
+			if (mapValues.containsKey(key)) return mapValues.get(key);
+			return null;
+		} else return getString(key);
+	}
+	
 	public boolean getBoolean(String key) {
 		String v = getString(key);
 		if (v.equals("1")) return true;
