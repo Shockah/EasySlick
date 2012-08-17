@@ -1,5 +1,6 @@
 package pl.shockah.easyslick;
 
+import java.util.ArrayList;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.UnicodeFont;
@@ -86,27 +87,32 @@ public class Fonts {
 		}
 	}
 	
+	public static String getStringWordwrap(GraphicsHelper gh, String text, float maxWidth) {
+		return getStringWordwrap(gh.g().getFont(),text,maxWidth);
+	}
 	public static String getStringWordwrap(Font font, String text, float maxWidth) {
-		String ret = "";
-		text = text.replace("\t","    ");
+		ArrayList<String> retl = new ArrayList<String>();
 		String[] lines = text.split("\\n");
 		
 		for (int i = 0; i < lines.length; i++) {
-			float xx = 0;
-			if (i != 0) ret += "\n";
-			String[] words = lines[i].split(" ",-1);
-			for (int i2 = 0; i2 < words.length; i2++) {
-				float ww = font.getWidth(words[i2]);
-				if (xx+ww <= maxWidth) {
-					ret += words[i2]+" ";
-					xx += ww;
-				} else {
-					ret += "\n"+words[i2];
-					xx = ww;
-				}
+			String[] words = lines[i].split(" ");
+			for (int i2 = 0; i2 < words.length; i2++) words[i2] = words[i2].replace("\t","    ");
+			StringBuffer sb = new StringBuffer(words[0]);
+			
+			for (int i2 = 1; i2 < words.length; i2++) {
+				if (font.getWidth(sb.toString()+" "+words[i2]) > maxWidth) {
+					retl.add(sb.toString());
+					sb = new StringBuffer(words[i2]);
+				} else sb.append(" "+words[i2]);
 			}
+			retl.add(sb.toString());
 		}
 		
-		return ret;
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < retl.size(); i++) {
+			if (i != 0) sb.append("\n");
+			sb.append(retl.get(i));
+		}
+		return sb.toString();
 	}
 }

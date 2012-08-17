@@ -7,6 +7,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="(pl.shockah) EasySlick/libs/windows"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="libs/slick.jar"/>
+	<classpathentry kind="lib" path="libs/slick.jar" sourcepath="/Slick1/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

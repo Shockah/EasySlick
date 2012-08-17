@@ -186,6 +186,7 @@ public class GraphicsHelper {
 		drawImage(image,x,y,baseScaleH,baseScaleV,anim.getCurrentState());
 	}
 	public void drawImage(Image image, float x, float y, float baseScaleH, float baseScaleV, AnimState state) {
+		if (state == null) state = new AnimState();
 		float old = image.getRotation();
 		image.setRotation(old+state.angle);
 		g.drawImage(image,x+state.pos.x,y+state.pos.y,x+state.pos.x+(image.getWidth()*state.scaleH*baseScaleH),y+state.pos.y+(image.getHeight()*state.scaleV*baseScaleV),0,0,image.getWidth(),image.getHeight(),state.color);
