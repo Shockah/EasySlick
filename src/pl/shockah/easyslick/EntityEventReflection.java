@@ -2,7 +2,7 @@ package pl.shockah.easyslick;
 
 import java.lang.reflect.Method;
 
-public abstract class EntityEventReflection extends EntityEvent {
+public class EntityEventReflection extends EntityEvent {
 	protected final Method method;
 	protected final String methodName;
 	
@@ -39,5 +39,8 @@ public abstract class EntityEventReflection extends EntityEvent {
 				method.invoke(e);
 			} catch (Exception e1) {App.getApp().handle(e1);}
 		}
+	}
+	protected boolean eventCheck(Entity e) {
+		return true;
 	}
 }
