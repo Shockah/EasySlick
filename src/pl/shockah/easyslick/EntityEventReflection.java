@@ -30,9 +30,10 @@ public class EntityEventReflection extends EntityEvent {
 					Method m = cls.getDeclaredMethod(methodName);
 					m.setAccessible(true);
 					m.invoke(e);
-				} catch (NoSuchMethodException e1) {continue;
+				} catch (NoSuchMethodException e1) {
+					cls = cls.getSuperclass();
+					continue;
 				} catch (Exception e1) {App.getApp().handle(e1);}
-				cls = cls.getSuperclass();
 			}
 		} else {
 			try {
