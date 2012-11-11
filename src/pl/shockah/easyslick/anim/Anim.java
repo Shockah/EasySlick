@@ -6,7 +6,7 @@ import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 import pl.shockah.Pair;
 
-public class Anim implements IAnim {
+public class Anim implements IAnim<AnimState> {
 	protected ArrayList<Pair<Float,AnimState>> states = new ArrayList<Pair<Float,AnimState>>();
 	protected float step = 0f;
 	public boolean looping = true;

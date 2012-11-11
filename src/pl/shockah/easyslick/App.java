@@ -8,22 +8,26 @@ import pl.shockah.easyslick.transitions.Transition;
 public final class App extends BasicGame implements IGameLoop,Thread.UncaughtExceptionHandler {
 	private static App app;
 	private static AppGameContainer acontainer;
+	private static CanvasGameContainer ccontainer;
 	private static IAppHooks hooks;
 	private static IGameLoop gameLoop;
 	private static Room firstRoom;
 	private static GraphicsHelper gh = null;
 	
 	public static void start(Room firstRoom, String windowTitle) {start(null,firstRoom,windowTitle);}
-	public static void start(IAppHooks hooks, Room firstRoom, String windowTitle) {
+	public static void start(IAppHooks hooks, Room firstRoom, String windowTitle) {start(hooks,firstRoom,windowTitle,false);}
+	public static void start(IAppHooks hooks, Room firstRoom, String windowTitle, boolean resizable) {
 		try {
 			App.hooks = hooks;
 			acontainer = new AppGameContainer(app = new App(windowTitle));
+			ccontainer = resizable ? new CanvasGameContainer(app,true) : null;
+			if (ccontainer != null) ccontainer.setVisible(true);
 			
 			App.firstRoom = firstRoom;
 			firstRoom.setupRoom();
 			Window.setup(firstRoom);
 			
-			acontainer.start();
+			if (ccontainer == null) acontainer.start(); else ccontainer.start();
 		} catch (Exception e) {App.getApp().handle(e);}
 	}
 	
@@ -96,6 +100,7 @@ public final class App extends BasicGame implements IGameLoop,Thread.UncaughtExc
 	public static void stop() {acontainer.stop();}
 	public static App getApp() {return app;}
 	public static AppGameContainer getAppGameContainer() {return acontainer;}
+	public static CanvasGameContainer getCanvasGameContainer() {return ccontainer;}
 	
 	public static void sleep(long ms) {
 		try {

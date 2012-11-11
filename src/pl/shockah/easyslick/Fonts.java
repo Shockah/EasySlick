@@ -87,6 +87,19 @@ public class Fonts {
 		}
 	}
 	
+	public static float getFontWidthSubtract(Font font, int fontAlign, String text) {
+		float x = 0, w = font.getWidth(text);
+		if (Helper.equalsOR(fontAlign,TopRight,MiddleRight,BottomRight)) x += w;
+		if (Helper.equalsOR(fontAlign,TopCenter,MiddleCenter,BottomCenter)) x += w/2f;
+		return x;
+	}
+	public static float getFontHeightSubtract(Font font, int fontAlign, String text) {
+		float y = 0, h = font.getHeight(text);
+		if (Helper.equalsOR(fontAlign,BottomLeft,BottomCenter,BottomRight)) y += h;
+		if (Helper.equalsOR(fontAlign,MiddleLeft,MiddleCenter,MiddleRight)) y += h/2f;
+		return y;
+	}
+	
 	public static String getStringWordwrap(GraphicsHelper gh, String text, float maxWidth) {
 		return getStringWordwrap(gh.g().getFont(),text,maxWidth);
 	}

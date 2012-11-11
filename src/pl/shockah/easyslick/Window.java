@@ -23,7 +23,9 @@ public final class Window {
 	public static void setup(Room room) {
 		try {
 			init = false;
-			AppGameContainer acontainer = App.getAppGameContainer();
+			CanvasGameContainer ccontainer = App.getCanvasGameContainer();
+			AppGameContainer acontainer = ccontainer == null ? App.getAppGameContainer() : ccontainer.getGameContainer();
+			
 			acontainer.setDisplayMode((int)room.viewSize.x,(int)room.viewSize.y,false);
 			acontainer.setTargetFrameRate(room.maxFPS <= 0 ? -1 : room.maxFPS);
 			acontainer.setSmoothDeltas(true);

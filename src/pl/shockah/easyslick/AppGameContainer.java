@@ -6,7 +6,7 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.opengl.renderer.SGL;
 
-public final class AppGameContainer extends org.newdawn.slick.AppGameContainer {
+public class AppGameContainer extends org.newdawn.slick.AppGameContainer {
 	public AppGameContainer(Game game) throws SlickException {
 		super(game);
 	}
@@ -92,5 +92,11 @@ public final class AppGameContainer extends org.newdawn.slick.AppGameContainer {
 		if (targetFPS != -1) {
 			Display.sync(targetFPS);
 		}
+	}
+	
+	protected void setup() {
+		try {
+			super.setup();
+		} catch (SlickException e) {App.getApp().handle(e);}
 	}
 }

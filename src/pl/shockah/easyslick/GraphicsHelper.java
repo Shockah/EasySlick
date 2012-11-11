@@ -176,13 +176,13 @@ public class GraphicsHelper {
 		g.drawImage(image,x,y,x+(image.getWidth()*scaleH),y+(image.getHeight()*scaleV),0,0,image.getWidth(),image.getHeight(),color);
 	}
 	
-	public void drawImage(Image image, float x, float y, IAnim anim) {
+	public void drawImage(Image image, float x, float y, IAnim<AnimState> anim) {
 		drawImage(image,x,y,1f,1f,anim.getCurrentState());
 	}
 	public void drawImage(Image image, float x, float y, AnimState state) {
 		drawImage(image,x,y,1f,1f,state);
 	}
-	public void drawImage(Image image, float x, float y, float baseScaleH, float baseScaleV, IAnim anim) {
+	public void drawImage(Image image, float x, float y, float baseScaleH, float baseScaleV, IAnim<AnimState> anim) {
 		drawImage(image,x,y,baseScaleH,baseScaleV,anim.getCurrentState());
 	}
 	public void drawImage(Image image, float x, float y, float baseScaleH, float baseScaleV, AnimState state) {
