@@ -94,6 +94,26 @@ public class Fonts {
 		return pos;
 	}
 	
+	public static Vector2f getActualStringXY(GraphicsHelper gh, String text, float x, float y) {
+		text = text.replace("\t","    ");
+		String[] lines = text.split("\\n");
+		int[] widths = new int[lines.length];
+		float w = 0, h = 0, hh = gh.g().getFont().getHeight("y");
+		for (int i = 0; i < lines.length; i++) {
+			widths[i] = gh.g().getFont().getWidth(lines[i]);
+			if (w < widths[i]) w = widths[i];
+			h += hh;
+		}
+		
+		float _y = y;
+		if (Helper.equalsOR(fontAlign,BottomLeft,BottomCenter,BottomRight)) _y -= h;
+		if (Helper.equalsOR(fontAlign,MiddleLeft,MiddleCenter,MiddleRight)) _y -= h/2f;
+		
+		Vector2f pos = new Vector2f(x,_y);
+		
+		return pos;
+	}
+	
 	public static float getFontWidthSubtract(Font font, int fontAlign, String text) {
 		float x = 0, w = font.getWidth(text);
 		if (Helper.equalsOR(fontAlign,TopRight,MiddleRight,BottomRight)) x += w;
