@@ -80,7 +80,7 @@ public class Fonts {
 		if (Helper.equalsOR(fontAlign,BottomLeft,BottomCenter,BottomRight)) _y -= h;
 		if (Helper.equalsOR(fontAlign,MiddleLeft,MiddleCenter,MiddleRight)) _y -= h/2f;
 		
-		Vector2f pos = new Vector2f(x,_y);
+		Float minX = null, minY = _y;
 		
 		for (int i = 0; i < lines.length; i++) {
 			_x = x;
@@ -89,9 +89,11 @@ public class Fonts {
 			
 			gh.g().drawString(lines[i],Math.round(_x),Math.round(_y));
 			_y += hh;
+			
+			if (minX == null || minX > _x) minX = _x;
 		}
 		
-		return pos;
+		return new Vector2f(minX,minY);
 	}
 	
 	public static Vector2f getActualStringXY(GraphicsHelper gh, String text, float x, float y) {
@@ -108,13 +110,22 @@ public class Fonts {
 			h += hh;
 		}
 		
-		float _y = y;
+		float _x, _y = y;
 		if (Helper.equalsOR(fontAlign,BottomLeft,BottomCenter,BottomRight)) _y -= h;
 		if (Helper.equalsOR(fontAlign,MiddleLeft,MiddleCenter,MiddleRight)) _y -= h/2f;
 		
-		Vector2f pos = new Vector2f(x,_y);
+		Float minX = null, minY = _y;
 		
-		return pos;
+		for (int i = 0; i < lines.length; i++) {
+			_x = x;
+			if (Helper.equalsOR(fontAlign,TopRight,MiddleRight,BottomRight)) _x -= widths[i];
+			if (Helper.equalsOR(fontAlign,TopCenter,MiddleCenter,BottomCenter)) _x -= widths[i]/2f;
+			_y += hh;
+			
+			if (minX == null || minX > _x) minX = _x;
+		}
+		
+		return new Vector2f(minX,minY);
 	}
 	
 	public static float getFontWidthSubtract(Font font, int fontAlign, String text) {
