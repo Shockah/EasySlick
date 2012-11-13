@@ -1,10 +1,13 @@
 package pl.shockah.easyslick;
 
 import java.util.ArrayList;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.geom.Vector2f;
+
 import pl.shockah.Helper;
 
 public class Fonts {
@@ -45,24 +48,24 @@ public class Fonts {
 		return font;
 	}
 	
-	public static void drawStringShadow(GraphicsHelper gh, String text, float x, float y) {
+	public static Vector2f drawStringShadow(GraphicsHelper gh, String text, float x, float y) {
 		drawString(gh,text,x-1,y-1);
 		drawString(gh,text,x+1,y-1);
 		drawString(gh,text,x-1,y+1);
-		drawString(gh,text,x+1,y+1);
+		return drawString(gh,text,x+1,y+1).add(new Vector2f(-1,-1));
 	}
-	public static void drawStringShadowed(GraphicsHelper gh, String text, float x, float y, Color shadowColor) {
+	public static Vector2f drawStringShadowed(GraphicsHelper gh, String text, float x, float y, Color shadowColor) {
 		Color color = gh.g().getColor();
 		gh.g().setColor(shadowColor);
 		drawStringShadow(gh,text,x,y);
 		gh.g().setColor(color);
-		drawString(gh,text,x,y);
+		return drawString(gh,text,x,y);
 	}
 	
 	public static void resetFontAlign() {fontAlign = TopLeft;}
 	public static void setFontAlign(int fontAlign) {Fonts.fontAlign = fontAlign;}
 	public static int getFontAlign() {return fontAlign;}
-	public static void drawString(GraphicsHelper gh, String text, float x, float y) {
+	public static Vector2f drawString(GraphicsHelper gh, String text, float x, float y) {
 		text = text.replace("\t","    ");
 		String[] lines = text.split("\\n");
 		int[] widths = new int[lines.length];
@@ -77,6 +80,8 @@ public class Fonts {
 		if (Helper.equalsOR(fontAlign,BottomLeft,BottomCenter,BottomRight)) _y -= h;
 		if (Helper.equalsOR(fontAlign,MiddleLeft,MiddleCenter,MiddleRight)) _y -= h/2f;
 		
+		Vector2f pos = new Vector2f(x,_y);
+		
 		for (int i = 0; i < lines.length; i++) {
 			_x = x;
 			if (Helper.equalsOR(fontAlign,TopRight,MiddleRight,BottomRight)) _x -= widths[i];
@@ -85,6 +90,8 @@ public class Fonts {
 			gh.g().drawString(lines[i],Math.round(_x),Math.round(_y));
 			_y += hh;
 		}
+		
+		return pos;
 	}
 	
 	public static float getFontWidthSubtract(Font font, int fontAlign, String text) {
