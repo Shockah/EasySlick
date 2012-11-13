@@ -95,12 +95,15 @@ public class Fonts {
 	}
 	
 	public static Vector2f getActualStringXY(GraphicsHelper gh, String text, float x, float y) {
+		return getActualStringXY(gh.g().getFont(),text,x,y);
+	}
+	public static Vector2f getActualStringXY(Font font, String text, float x, float y) {
 		text = text.replace("\t","    ");
 		String[] lines = text.split("\\n");
 		int[] widths = new int[lines.length];
-		float w = 0, h = 0, hh = gh.g().getFont().getHeight("y");
+		float w = 0, h = 0, hh = font.getHeight("y");
 		for (int i = 0; i < lines.length; i++) {
-			widths[i] = gh.g().getFont().getWidth(lines[i]);
+			widths[i] = font.getWidth(lines[i]);
 			if (w < widths[i]) w = widths[i];
 			h += hh;
 		}
