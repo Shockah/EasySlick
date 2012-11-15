@@ -3,8 +3,8 @@ package pl.shockah.easyslick;
 public enum EFontAlign {
 	TopLeft(0,0), TopCenter(1,0), TopRight(2,0), MiddleLeft(0,1), MiddleCenter(1,1), MiddleRight(2,1), BottomLeft(0,2), BottomCenter(1,2), BottomRight(2,2);
 	
-	protected static final EFontAlign[] array = new EFontAlign[9];
-	private static final EFontAlign[][] pos = new EFontAlign[3][3];
+	public static final EFontAlign[] array = new EFontAlign[9];
+	public static final EFontAlign[][] pos = new EFontAlign[3][3];
 	
 	public final int x, y;
 	
