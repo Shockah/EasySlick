@@ -1,21 +1,18 @@
 package pl.shockah.easyslick;
 
 import java.util.ArrayList;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Vector2f;
 
-import pl.shockah.Helper;
-
 public class Fonts {
 	public static final int
 		TopLeft = 0, TopCenter = 1, TopRight = 2,
 		MiddleLeft = 3, MiddleCenter = 4, MiddleRight = 5,
 		BottomLeft = 6, BottomCenter = 7, BottomRight = 8;
-	private static int fontAlign = TopLeft;
+	private static EFontAlign fontAlign = EFontAlign.TopLeft;
 	
 	public static final UnicodeFont
 		standard12 = newUnicodeFontFile("fontExpresswayFree.ttf",12,false,false),
@@ -62,9 +59,14 @@ public class Fonts {
 		return drawString(gh,text,x,y);
 	}
 	
-	public static void resetFontAlign() {fontAlign = TopLeft;}
-	public static void setFontAlign(int fontAlign) {Fonts.fontAlign = fontAlign;}
-	public static int getFontAlign() {return fontAlign;}
+	public static void resetFontAlign() {fontAlign = EFontAlign.TopLeft;}
+	
+	public static void setFontAlign(int fontAlign) {Fonts.fontAlign = EFontAlign.array[fontAlign];}
+	public static void setFontAlign(EFontAlign fontAlign) {Fonts.fontAlign = fontAlign;}
+	
+	public static int getFontAlignInt() {return fontAlign.ordinal();}
+	public static EFontAlign getFontAlign() {return fontAlign;}
+	
 	public static Vector2f drawString(GraphicsHelper gh, String text, float x, float y) {
 		text = text.replace("\t","    ");
 		String[] lines = text.split("\\n");
@@ -77,15 +79,15 @@ public class Fonts {
 		}
 		
 		float _x, _y = y;
-		if (Helper.equalsOR(fontAlign,BottomLeft,BottomCenter,BottomRight)) _y -= h;
-		if (Helper.equalsOR(fontAlign,MiddleLeft,MiddleCenter,MiddleRight)) _y -= h/2f;
+		if (fontAlign.y == 2) _y -= h;
+		if (fontAlign.y == 1) _y -= h/2f;
 		
 		Float minX = null, minY = _y;
 		
 		for (int i = 0; i < lines.length; i++) {
 			_x = x;
-			if (Helper.equalsOR(fontAlign,TopRight,MiddleRight,BottomRight)) _x -= widths[i];
-			if (Helper.equalsOR(fontAlign,TopCenter,MiddleCenter,BottomCenter)) _x -= widths[i]/2f;
+			if (fontAlign.x == 2) _x -= widths[i];
+			if (fontAlign.x == 1) _x -= widths[i]/2f;
 			
 			gh.g().drawString(lines[i],Math.round(_x),Math.round(_y));
 			_y += hh;
@@ -111,15 +113,15 @@ public class Fonts {
 		}
 		
 		float _x, _y = y;
-		if (Helper.equalsOR(fontAlign,BottomLeft,BottomCenter,BottomRight)) _y -= h;
-		if (Helper.equalsOR(fontAlign,MiddleLeft,MiddleCenter,MiddleRight)) _y -= h/2f;
+		if (fontAlign.y == 2) _y -= h;
+		if (fontAlign.y == 1) _y -= h/2f;
 		
 		Float minX = null, minY = _y;
 		
 		for (int i = 0; i < lines.length; i++) {
 			_x = x;
-			if (Helper.equalsOR(fontAlign,TopRight,MiddleRight,BottomRight)) _x -= widths[i];
-			if (Helper.equalsOR(fontAlign,TopCenter,MiddleCenter,BottomCenter)) _x -= widths[i]/2f;
+			if (fontAlign.x == 2) _x -= widths[i];
+			if (fontAlign.x == 1) _x -= widths[i]/2f;
 			_y += hh;
 			
 			if (minX == null || minX > _x) minX = _x;
@@ -129,15 +131,22 @@ public class Fonts {
 	}
 	
 	public static float getFontWidthSubtract(Font font, int fontAlign, String text) {
+		return getFontWidthSubtract(font,EFontAlign.array[fontAlign],text);
+	}
+	public static float getFontWidthSubtract(Font font, EFontAlign fontAlign, String text) {
 		float x = 0, w = font.getWidth(text);
-		if (Helper.equalsOR(fontAlign,TopRight,MiddleRight,BottomRight)) x += w;
-		if (Helper.equalsOR(fontAlign,TopCenter,MiddleCenter,BottomCenter)) x += w/2f;
+		if (fontAlign.x == 2) x += w;
+		if (fontAlign.x == 1) x += w/2f;
 		return x;
 	}
+	
 	public static float getFontHeightSubtract(Font font, int fontAlign, String text) {
+		return getFontHeightSubtract(font,EFontAlign.array[fontAlign],text);
+	}
+	public static float getFontHeightSubtract(Font font, EFontAlign fontAlign, String text) {
 		float y = 0, h = font.getHeight(text);
-		if (Helper.equalsOR(fontAlign,BottomLeft,BottomCenter,BottomRight)) y += h;
-		if (Helper.equalsOR(fontAlign,MiddleLeft,MiddleCenter,MiddleRight)) y += h/2f;
+		if (fontAlign.y == 2) y += h;
+		if (fontAlign.y == 1) y += h/2f;
 		return y;
 	}
 	
