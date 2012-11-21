@@ -35,9 +35,9 @@ public class TestAnimMultiple extends Room {
 		
 		AnimMultipleLine
 			linePos = new AnimMultipleLine(p,2),
-			lineColor = new AnimMultipleLine().useColor(true),
-			lineAngle = new AnimMultipleLine().useAngle(true),
-			lineScale = new AnimMultipleLine().useScale(true);
+			lineColor = new AnimMultipleLine().useColor(),
+			lineAngle = new AnimMultipleLine().useAngle(),
+			lineScale = new AnimMultipleLine().useScale();
 		
 		linePos.looping = true;
 		lineColor.looping = true;

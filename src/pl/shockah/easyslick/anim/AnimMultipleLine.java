@@ -21,18 +21,22 @@ public class AnimMultipleLine extends Anim {
 		myScale = other.myScale;
 	}
 	
+	public AnimMultipleLine usePos() {return usePos(true);}
 	public AnimMultipleLine usePos(boolean myPos) {
 		this.myPos = myPos;
 		return this;
 	}
+	public AnimMultipleLine useColor() {return useColor(true);}
 	public AnimMultipleLine useColor(boolean myColor) {
 		this.myColor = myColor;
 		return this;
 	}
+	public AnimMultipleLine useAngle() {return useAngle(true);}
 	public AnimMultipleLine useAngle(boolean myAngle) {
 		this.myAngle = myAngle;
 		return this;
 	}
+	public AnimMultipleLine useScale() {return useScale(true);}
 	public AnimMultipleLine useScale(boolean myScale) {
 		this.myScale = myScale;
 		return this;
