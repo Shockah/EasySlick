@@ -48,13 +48,13 @@ public abstract class GuiElButtonDropdownMenu extends GuiElButtonDropdown {
 	public class Button extends GuiElButton {
 		protected final GuiElButtonDropdownMenu menu;
 		protected final Runnable runnable;
-		protected final int id;
+		protected final int buttonId;
 		
 		public Button(GuiElButtonDropdownMenu menu, String text, Runnable runnable) {
 			super(menu.gui,menu.panel,menu.pos.copy().add(new Vector2f(0,Math.round((buttons.size()+(menu.dropBottom ? 0 : 1))*menu.size.y/4f*3f*(menu.dropBottom ? 1f : -1f)+(menu.dropBottom ? menu.size.y : 0)))),new Vector2f(menu.size.x,Math.round(menu.size.y/4f*3f)),text);
 			this.menu = menu;
 			this.runnable = runnable;
-			id = buttons.size();
+			buttonId = buttons.size();
 		}
 
 		protected boolean isMouseOver() {
@@ -63,7 +63,7 @@ public abstract class GuiElButtonDropdownMenu extends GuiElButtonDropdown {
 		}
 		protected void onTick(int tick) {
 			color.a += tick/100f*(menu.toggle ? 1f : -1f);
-			color.a = Math.min(Math.max(color.a,-id*.2f),1+id*.2f);
+			color.a = Math.min(Math.max(color.a,-buttonId*.2f),1+buttonId*.2f);
 			super.onTick(tick);
 		}
 		protected void onMouseClicked() {

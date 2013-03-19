@@ -9,7 +9,6 @@ import pl.shockah.easyslick.gui.Gui;
 public class GuiElCaption extends GuiEl {
 	protected float maxW;
 	public String text;
-	protected Color color = Color.white;
 	protected int fontAlign = Fonts.TopLeft;
 	
 	public GuiElCaption(Gui gui, GuiElPanel panel, Vector2f pos, String text) {

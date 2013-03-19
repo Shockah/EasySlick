@@ -36,7 +36,7 @@ public class Fonts {
 		return prepareUnicodeFont(font);
 	}
 	
-	@SuppressWarnings("unchecked") private static UnicodeFont prepareUnicodeFont(UnicodeFont font) {
+	private static UnicodeFont prepareUnicodeFont(UnicodeFont font) {
 		try {
 			font.getEffects().add(new ColorEffect(java.awt.Color.white));
 			font.addAsciiGlyphs();

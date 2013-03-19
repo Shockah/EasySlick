@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-@SuppressWarnings("unchecked") public class Reflection {
+public class Reflection {
 	public static Field getField(Class<?> cls, String fieldName) throws NoSuchFieldException,SecurityException {
 		Field field = cls.getDeclaredField(fieldName);
 		field.setAccessible(true);

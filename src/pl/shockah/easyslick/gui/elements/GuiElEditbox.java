@@ -109,7 +109,7 @@ public class GuiElEditbox extends GuiElSelectable {
 		float wText = gh.g().getFont().getWidth(text), wSelect = gh.g().getFont().getWidth(text.substring(0,listener.getCursorPos()));
 		float shift = wText < size.x-padding*2 ? 0 : Math.min(Math.max(wSelect-size.x/2f,0),wText-size.x+padding*2);
 		
-		if ((text == null || text.isEmpty()) && placeholder != null) {
+		if (text.isEmpty() && placeholder != null) {
 			gh.g().setColor(Colors.alpha(cText,.5f).multiply(color));
 			Fonts.drawString(gh,placeholder,xOnView(pos.x)+padding-shift,yOnView(pos.y)+size.y/2f);
 		} else {
