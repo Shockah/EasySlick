@@ -1,13 +1,16 @@
 package pl.shockah.easyslick;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Vector2f;
 import pl.shockah.easyslick.transitions.Transition;
 
 public abstract class Entity extends Render {
-	private static ArrayList<Entity> entities = new ArrayList<Entity>(), toRemove = new ArrayList<Entity>(), toAdd = new ArrayList<Entity>();
-	private static ArrayList<EntityEvent> eventsGlobal = new ArrayList<EntityEvent>();
+	private static List<Entity> entities = new LinkedList<Entity>(), toRemove = new LinkedList<Entity>(), toAdd = new LinkedList<Entity>();
+	private static List<EntityEvent> eventsGlobal = new LinkedList<EntityEvent>();
 	
 	public static void addGlobalEvent(EntityEvent event) {eventsGlobal.add(event);}
 	public void removeGlobalEvent(EntityEvent event) {eventsGlobal.remove(event);}
@@ -17,13 +20,14 @@ public abstract class Entity extends Render {
 		if (force) {
 			entities.removeAll(toRemove);
 			toRemove.clear();
-			for (int i = 0; i < entities.size(); i++) if (!entities.get(i).persistent) entities.remove(i--);
+			
+			Iterator<Entity> it = entities.iterator();
+			while (it.hasNext()) if (!it.next().persistent) it.remove();
 		} else toRemove.addAll(entities);
 		toAdd.clear();
 	}
 	public static void doTick(int delta, boolean tickOnlySpecial) {
-		for (int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
+		for (Entity e : entities) {
 			if (App.getGameLoop().canUpdate(e) && (!tickOnlySpecial || isSpecial(e))) e.tick(delta);
 		}
 		
@@ -104,7 +108,7 @@ public abstract class Entity extends Render {
 		if (!equals(entity)) entity.updateShape();
 		return shape.intersects(entity.shape) || shape.contains(entity.shape);
 	}
-	public boolean collides(ArrayList<Entity> entities) {
+	public boolean collides(List<Entity> entities) {
 		if (shape == null) return false;
 		for (Entity entity : entities) if (collides(entity)) return true;
 		return false;
@@ -126,7 +130,7 @@ public abstract class Entity extends Render {
 		if (shape == null) return false;
 		return this.shape.intersects(shape) || this.shape.contains(shape);
 	}
-	public boolean collidesShape(ArrayList<Shape> shapes) {
+	public boolean collidesShape(List<Shape> shapes) {
 		if (shape == null) return false;
 		for (Shape sh : shapes) if (collidesShape(sh)) return true;
 		return false;
@@ -136,7 +140,7 @@ public abstract class Entity extends Render {
 		if (entity == null) return false;
 		return entity.collidesShape(shape);
 	}
-	public static boolean shapeCollides(Shape shape, ArrayList<Entity> entities) {
+	public static boolean shapeCollides(Shape shape, List<Entity> entities) {
 		if (shape == null) return false;
 		for (Entity entity : entities) if (shapeCollides(shape,entity)) return true;
 		return false;
@@ -152,8 +156,8 @@ public abstract class Entity extends Render {
 		return false;
 	}
 	
-	public ArrayList<Entity> collidesWith(ArrayList<Entity> entities) {
-		ArrayList<Entity> list = new ArrayList<Entity>();
+	public List<Entity> collidesWith(List<Entity> entities) {
+		List<Entity> list = new LinkedList<Entity>();
 		if (shape == null) return list;
 		for (Entity entity : entities) if (collides(entity)) list.add(entity);
 		return list;
@@ -166,7 +170,7 @@ public abstract class Entity extends Render {
 		updateShape();
 		return collide;
 	}
-	public boolean collides(Vector2f pos, ArrayList<Entity> entities) {
+	public boolean collides(Vector2f pos, List<Entity> entities) {
 		if (shape == null) return false;
 		updateShape(pos);
 		boolean collide = collides(entities);
@@ -195,7 +199,7 @@ public abstract class Entity extends Render {
 		updateShape();
 		return collide;
 	}
-	public boolean collidesShape(Vector2f pos, ArrayList<Shape> shapes) {
+	public boolean collidesShape(Vector2f pos, List<Shape> shapes) {
 		if (shape == null) return false;
 		updateShape(pos);
 		boolean collide = collidesShape(shapes);

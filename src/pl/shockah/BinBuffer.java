@@ -17,6 +17,10 @@ public class BinBuffer {
 		setByteBuffer(bb);
 		setPos(bytes);
 	}
+	public BinBuffer(byte[] bytes) {
+		buffer = bytes;
+		pos = 0;
+	}
 	
 	protected void increaseBufferSize() {
 		buffer = Arrays.copyOf(buffer,buffer.length*2);
@@ -115,7 +119,7 @@ public class BinBuffer {
 	}
 	
 	public ByteBuffer getByteBuffer() {
-		return ByteBuffer.wrap(buffer,getPos(),getSize());
+		return ByteBuffer.wrap(buffer,getPos(),getSize()).asReadOnlyBuffer();
 	}
 	public BinBuffer setByteBuffer(ByteBuffer bb) {
 		buffer = bb.array();

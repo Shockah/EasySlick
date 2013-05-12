@@ -1,9 +1,11 @@
 package pl.shockah.easyslick;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 public abstract class Render {
-	private static ArrayList<Render> renders = new ArrayList<Render>(), toAdd = new ArrayList<Render>(), toRemove = new ArrayList<Render>();
+	private static List<Render> renders = new LinkedList<Render>(), toAdd = new LinkedList<Render>(), toRemove = new LinkedList<Render>();
 	private static int nextID = 0;
 	
 	public static void clear() {clear(false);}
@@ -26,9 +28,10 @@ public abstract class Render {
 		for (Render render : renders) if (App.getGameLoop().canRender(render) && View.get().canRender(render)) render.render(gh);
 	}
 	private static void addRender(Render render) {
-		for (int i = 0; i < renders.size(); i++) {
-			if (renders.get(i).depth < render.depth) {
-				renders.add(i,render);
+		ListIterator<Render> lit = renders.listIterator();
+		while (lit.hasNext()) {
+			if (lit.next().depth < render.depth) {
+				lit.add(render);
 				return;
 			}
 		}
